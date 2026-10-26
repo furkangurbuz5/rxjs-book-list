@@ -8,7 +8,7 @@ export class BookService {
   private readonly http = inject(HttpClient);
   private readonly dbooksUrl = 'https://www.dbooks.org/api';
 
-  getBooks(search: string): Observable<Book[]> {
+  public getBooks(search: string): Observable<Book[]> {
     if (isEmpty(search)) {
       return of([] as Book[]);
     }
@@ -17,11 +17,11 @@ export class BookService {
       .pipe(map((response) => response.books));
   }
 
-  getBookDetail(id: string): Observable<BookDetails> {
+  public getBookDetail(id: string): Observable<BookDetails> {
     return this.http.get<BookDetails>(`${this.dbooksUrl}/book/${id}`);
   }
 
-  getRecentBooks(): Observable<Book[]> {
+  public getRecentBooks(): Observable<Book[]> {
     return this.http
       .get<BookResponse>(`${this.dbooksUrl}/recent`)
       .pipe(map((response) => response.books));
