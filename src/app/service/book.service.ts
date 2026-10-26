@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { Observable, map, of, shareReplay } from 'rxjs';
+import { inject, Injectable, Service } from '@angular/core';
+import { Observable, map, of, share } from 'rxjs';
 import { Book, BookDetails, BookResponse } from '../interface/book.interface';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class BookService {
   private readonly http = inject(HttpClient);
   private readonly dbooksUrl = 'https://www.dbooks.org/api';
@@ -24,7 +24,7 @@ export class BookService {
   public getRecentBooks(): Observable<Book[]> {
     return this.http
       .get<BookResponse>(`${this.dbooksUrl}/recent`)
-      .pipe(map((response) => response.books), shareReplay(5));
+      .pipe(map((response) => response.books), share());
   }
 }
 
