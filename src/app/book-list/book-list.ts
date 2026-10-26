@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, OnInit, effect } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, switchMap, tap, finalize, catchError, of, startWith, take } from 'rxjs';
+import { debounceTime, switchMap, tap, finalize, catchError, of, startWith, take, filter } from 'rxjs';
 import { BookService } from '../service/book.service';
 import { Book } from '../interface/book.interface';
 import { Spinner } from '../util/spinner/spinner';
@@ -18,23 +18,24 @@ export class BookList implements OnInit {
   private readonly bookService = inject(BookService);
   private readonly fb = inject(FormBuilder);
 
-  private INITIAL_SEARCH = 'java';
+  private INITIAL_SEARCH = '';
   private DEBOUNCE_TIME_IN_MS = 300;
 
   protected readonly search = this.fb.nonNullable.control<string>(this.INITIAL_SEARCH);
 
   protected readonly searched = signal<string>('');
   protected readonly isLoading = signal<boolean>(false);
-  protected readonly isRecent = signal<boolean>(false);
+  protected readonly isRecent = signal<boolean>(true);
 
   protected readonly books$ = this.search.valueChanges.pipe(
     startWith(this.INITIAL_SEARCH),
-    debounceTime(this.DEBOUNCE_TIME_IN_MS),
+    filter((search) => search !== ''),
     tap((search: string) => {
       this.isLoading.set(true);
       this.searched.set(search);
       this.isRecent.set(false);
     }),
+    debounceTime(this.DEBOUNCE_TIME_IN_MS),
     switchMap((search: string) => {
       console.log(search);
       return this.bookService.getBooks(search).pipe(
@@ -50,13 +51,15 @@ export class BookList implements OnInit {
   protected readonly recentBooks$ = this.bookService.getRecentBooks().pipe(
     tap(() => {
       this.isLoading.set(true);
-      this.isRecent.set(false);
+      this.searched.set('');
     }),
     finalize(() => this.isLoading.set(false)),
     catchError(() => {
       return of([] as Book[]);
     }),
   );
+
+  testEffect = effect(() => console.log(this.isRecent()))
 
   ngOnInit(): void {}
 
