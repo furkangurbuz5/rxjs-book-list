@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ChangeDetectionStrategy, inject, signal, OnInit, effect } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
   debounceTime,
@@ -8,9 +8,8 @@ import {
   finalize,
   catchError,
   of,
-  startWith,
-  take,
   filter,
+  distinctUntilChanged,
 } from 'rxjs';
 import { BookService } from '../service/book.service';
 import { Book } from '../interface/book.interface';
@@ -38,8 +37,8 @@ export class BookList implements OnInit {
   protected readonly isRecent = signal<boolean>(true);
 
   protected readonly books$ = this.search.valueChanges.pipe(
-    startWith(this.INITIAL_SEARCH),
     filter((search) => search !== ''),
+    distinctUntilChanged(),
     tap((search: string) => {
       this.isLoading.set(true);
       this.searched.set(search);
