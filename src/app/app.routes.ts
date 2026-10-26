@@ -9,6 +9,10 @@ export const routes: Routes = [
     component: BookList,
   },
   {
+    path: 'books',
+    redirectTo: '',
+  },
+  {
     title: 'Book detail',
     path: 'book/:id',
     component: BookDetailsPage,
