@@ -9,7 +9,9 @@
   @if (searched()) {
     <h2>Showing results for {{ searched() }}</h2>
   }
-  @for (book of books; track book.id) {
-    <fwdl-book [book]="book"></fwdl-book>
-  }
+   <div class="books-grid">
+    @for (book of books; track book.id) {
+      <fwdl-book [book]="book"></fwdl-book>
+    }
+  </div>
 }
