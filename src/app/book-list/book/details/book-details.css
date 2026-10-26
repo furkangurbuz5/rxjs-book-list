@@ -1,0 +1,28 @@
+.book-details {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+img {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+.meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.btn {
+  padding: 0.5rem 1rem;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
