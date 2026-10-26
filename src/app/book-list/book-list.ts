@@ -1,7 +1,16 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ChangeDetectionStrategy, inject, signal, OnInit, effect } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, switchMap, tap, finalize, startWith } from 'rxjs';
+import {
+  debounceTime,
+  switchMap,
+  tap,
+  finalize,
+  catchError,
+  throwError,
+  of,
+  startWith,
+} from 'rxjs';
 import { BookService } from '../service/book.service';
 import { Book } from '../interface/book.interface';
 import { Spinner } from '../util/spinner/spinner';
@@ -24,7 +33,6 @@ export class BookList implements OnInit {
 
   protected readonly searched = signal<string>('');
   protected readonly isLoading = signal<boolean>(false);
-  protected readonly books = signal<Book[]>([]);
 
   protected readonly books$ = this.search.valueChanges.pipe(
     startWith(this.INITIAL_SEARCH),
@@ -35,9 +43,14 @@ export class BookList implements OnInit {
     }),
     switchMap((search: string) => {
       console.log(search);
-      return this.bookService.getBooks(search).pipe(finalize(() => this.isLoading.set(false)));
+      return this.bookService.getBooks(search).pipe(
+        finalize(() => this.isLoading.set(false)),
+        catchError(() => {
+          this.searched.set('');
+          return of([] as Book[]);
+        }),
+      );
     }),
-    tap((books) => this.books.set(books)),
   );
 
   ngOnInit(): void {}
