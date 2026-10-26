@@ -1,0 +1,27 @@
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+
+.spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 0.25rem solid #ccc;
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

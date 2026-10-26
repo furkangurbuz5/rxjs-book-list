@@ -1,0 +1,15 @@
+<h2 for="search">Search books</h2>
+<input id="search" [formControl]="search" />
+
+@let books = books$ | async;
+
+@if (isLoading()) {
+  <fwdl-spinner [spin]="isLoading()"></fwdl-spinner>
+} @else {
+  @if (searched()) {
+    <h2>Showing results for {{ searched() }}</h2>
+  }
+  @for (book of books; track book.id) {
+    <fwdl-book [book]="book"></fwdl-book>
+  }
+}
