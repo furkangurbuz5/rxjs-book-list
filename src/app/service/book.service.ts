@@ -24,7 +24,7 @@ export class BookService {
   public getRecentBooks(): Observable<Book[]> {
     return this.http
       .get<BookResponse>(`${this.dbooksUrl}/recent`)
-      .pipe(map((response) => response.books), shareReplay());
+      .pipe(map((response) => response.books), shareReplay(5));
   }
 }
 
