@@ -1,3 +1,11 @@
-<h3>{{ book().title }}</h3>
-<h5>Authors: {{ book().authors }}</h5>
-<hr />
+<div class="book">
+  <img [src]="book().image" [alt]="book().title" class="cover" />
+  <div class="info">
+    <h3>{{ book().title }}</h3>
+    @if (book().subtitle) {
+      <p class="subtitle">{{ book().subtitle }}</p>
+    }
+    <p class="authors">{{ book().authors }}</p>
+    <a [routerLink]="['/book', book().id]" class="details-link"> View Full Details </a>
+  </div>
+</div>

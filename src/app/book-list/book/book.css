@@ -1,0 +1,25 @@
+.book {
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 400px;
+}
+.cover {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+}
+.subtitle {
+  font-size: 0.9rem;
+}
+.authors {
+  font-size: 0.9rem;
+}
+.details-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #007bff;
+  text-decoration: none;
+}
+.details-link:hover {
+  text-decoration: underline;
+}
