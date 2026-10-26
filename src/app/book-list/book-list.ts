@@ -1,16 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import {
-  debounceTime,
-  switchMap,
-  tap,
-  finalize,
-  catchError,
-  throwError,
-  of,
-  startWith,
-} from 'rxjs';
+import { debounceTime, switchMap, tap, finalize, catchError, of, startWith, take } from 'rxjs';
 import { BookService } from '../service/book.service';
 import { Book } from '../interface/book.interface';
 import { Spinner } from '../util/spinner/spinner';
@@ -28,6 +19,7 @@ export class BookList implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   private INITIAL_SEARCH = 'java';
+  private DEBOUNCE_TIME_IN_MS = 300;
 
   protected readonly search = this.fb.nonNullable.control<string>(this.INITIAL_SEARCH);
 
@@ -37,7 +29,7 @@ export class BookList implements OnInit {
 
   protected readonly books$ = this.search.valueChanges.pipe(
     startWith(this.INITIAL_SEARCH),
-    debounceTime(100),
+    debounceTime(this.DEBOUNCE_TIME_IN_MS),
     tap((search: string) => {
       this.isLoading.set(true);
       this.searched.set(search);
@@ -57,10 +49,9 @@ export class BookList implements OnInit {
 
   protected readonly recentBooks$ = this.search.valueChanges.pipe(
     startWith(this.INITIAL_SEARCH),
-    debounceTime(100),
-    tap((search: string) => {
+    debounceTime(300),
+    tap(() => {
       this.isLoading.set(true);
-      this.searched.set(search);
       this.isRecent.set(false);
     }),
     switchMap((search: string) => {
@@ -68,7 +59,6 @@ export class BookList implements OnInit {
       return this.bookService.getRecentBooks().pipe(
         finalize(() => this.isLoading.set(false)),
         catchError(() => {
-          this.searched.set('');
           return of([] as Book[]);
         }),
       );
@@ -79,5 +69,8 @@ export class BookList implements OnInit {
 
   protected onShowRecent(): void {
     this.isRecent.set(true);
+  }
+  protected setSearchValue(value: string) {
+    this.search.setValue(value);
   }
 }

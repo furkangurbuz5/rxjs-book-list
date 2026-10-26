@@ -1,6 +1,34 @@
 <h2 for="search">Search books</h2>
 <input id="search" [formControl]="search" />
 
+<h3>Select a programming language</h3>
+<div class="options-grid">
+  <button
+    [class.selected]="this.search.getRawValue().toLowerCase() === 'python'"
+    (click)="setSearchValue('python')"
+  >
+    Python
+  </button>
+  <button
+    [class.selected]="this.search.getRawValue().toLowerCase() === 'java'"
+    (click)="setSearchValue('java')"
+  >
+    Java
+  </button>
+  <button
+    [class.selected]="this.search.getRawValue().toLowerCase() === 'javascript'"
+    (click)="setSearchValue('javascript')"
+  >
+    JavaScript
+  </button>
+  <button
+    [class.selected]="this.search.getRawValue().toLowerCase() === 'rust'"
+    (click)="setSearchValue('rust')"
+  >
+    Rust
+  </button>
+</div>
+
 <button (click)="onShowRecent()">Show recent books</button>
 
 @let books = books$ | async;
