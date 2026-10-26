@@ -33,6 +33,7 @@ export class BookList implements OnInit {
 
   protected readonly searched = signal<string>('');
   protected readonly isLoading = signal<boolean>(false);
+  protected readonly isRecent = signal<boolean>(false);
 
   protected readonly books$ = this.search.valueChanges.pipe(
     startWith(this.INITIAL_SEARCH),
@@ -40,6 +41,7 @@ export class BookList implements OnInit {
     tap((search: string) => {
       this.isLoading.set(true);
       this.searched.set(search);
+      this.isRecent.set(false);
     }),
     switchMap((search: string) => {
       console.log(search);
@@ -53,5 +55,29 @@ export class BookList implements OnInit {
     }),
   );
 
+  protected readonly recentBooks$ = this.search.valueChanges.pipe(
+    startWith(this.INITIAL_SEARCH),
+    debounceTime(100),
+    tap((search: string) => {
+      this.isLoading.set(true);
+      this.searched.set(search);
+      this.isRecent.set(false);
+    }),
+    switchMap((search: string) => {
+      console.log(search);
+      return this.bookService.getRecentBooks().pipe(
+        finalize(() => this.isLoading.set(false)),
+        catchError(() => {
+          this.searched.set('');
+          return of([] as Book[]);
+        }),
+      );
+    }),
+  );
+
   ngOnInit(): void {}
+
+  protected onShowRecent(): void {
+    this.isRecent.set(true);
+  }
 }

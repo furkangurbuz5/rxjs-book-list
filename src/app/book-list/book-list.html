@@ -1,17 +1,29 @@
 <h2 for="search">Search books</h2>
 <input id="search" [formControl]="search" />
 
+<button (click)="onShowRecent()">Show recent books</button>
+
 @let books = books$ | async;
+@let recentBooks = recentBooks$ | async;
 
 @if (isLoading()) {
   <fwdl-spinner [spin]="isLoading()"></fwdl-spinner>
 } @else {
-  @if (searched()) {
-    <h2>Showing results for {{ searched() }}</h2>
-  }
-   <div class="books-grid">
-    @for (book of books; track book.id) {
-      <fwdl-book [book]="book"></fwdl-book>
+  @if (isRecent()) {
+    <h2>Showing most recent books</h2>
+    <div class="books-grid">
+      @for (book of recentBooks; track book.id) {
+        <fwdl-book [book]="book"></fwdl-book>
+      }
+    </div>
+  } @else {
+    @if (searched()) {
+      <h2>Showing results for {{ searched() }}</h2>
     }
-  </div>
+    <div class="books-grid">
+      @for (book of books; track book.id) {
+        <fwdl-book [book]="book"></fwdl-book>
+      }
+    </div>
+  }
 }

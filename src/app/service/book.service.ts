@@ -20,6 +20,12 @@ export class BookService {
   getBookDetail(id: string): Observable<BookDetails> {
     return this.http.get<BookDetails>(`${this.dbooksUrl}/book/${id}`);
   }
+
+  getRecentBooks(): Observable<Book[]> {
+    return this.http
+      .get<BookResponse>(`${this.dbooksUrl}/recent`)
+      .pipe(map((response) => response.books));
+  }
 }
 
 function isEmpty(str: string): boolean {
