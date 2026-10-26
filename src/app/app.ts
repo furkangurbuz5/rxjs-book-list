@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BookList } from './book-list/book-list';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
-  imports: [ReactiveFormsModule, BookList],
+  imports: [ReactiveFormsModule, RouterOutlet],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
