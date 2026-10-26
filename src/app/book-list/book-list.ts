@@ -5,7 +5,7 @@ import { debounceTime, switchMap, tap, finalize, catchError, of, startWith, take
 import { BookService } from '../service/book.service';
 import { Book } from '../interface/book.interface';
 import { Spinner } from '../util/spinner/spinner';
-import { Book as FwdlBook } from './book/book';
+import { BookPage as FwdlBook } from './book/book';
 
 @Component({
   imports: [AsyncPipe, ReactiveFormsModule, FwdlBook, Spinner],
@@ -47,21 +47,14 @@ export class BookList implements OnInit {
     }),
   );
 
-  protected readonly recentBooks$ = this.search.valueChanges.pipe(
-    startWith(this.INITIAL_SEARCH),
-    debounceTime(300),
+  protected readonly recentBooks$ = this.bookService.getRecentBooks().pipe(
     tap(() => {
       this.isLoading.set(true);
       this.isRecent.set(false);
     }),
-    switchMap((search: string) => {
-      console.log(search);
-      return this.bookService.getRecentBooks().pipe(
-        finalize(() => this.isLoading.set(false)),
-        catchError(() => {
-          return of([] as Book[]);
-        }),
-      );
+    finalize(() => this.isLoading.set(false)),
+    catchError(() => {
+      return of([] as Book[]);
     }),
   );
 
