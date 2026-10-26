@@ -1,6 +1,8 @@
 <button routerLink="/">Go back</button>
 
-@if (details()) {
+@if (isLoading()) {
+  <fwdl-spinner [spin]="isLoading()"></fwdl-spinner>
+} @else if (details()) {
   <article class="book-details">
     <img [src]="details().image" [alt]="details().title" />
     <h2>{{ details().title }}</h2>
