@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { Book as CurrentBook } from '../../interface/book.interface';
+import { Book } from '../../interface/book.interface';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -9,6 +9,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: 'book.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Book {
-  readonly book = input.required<CurrentBook>();
+export class BookPage {
+  readonly book = input.required<Book>();
 }
