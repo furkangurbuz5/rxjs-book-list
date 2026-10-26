@@ -8,25 +8,25 @@
   <div class="options-grid">
     <button
       [class.selected]="this.search.getRawValue().toLowerCase() === 'python'"
-      (click)="setSearchValue('python')"
+      (click)="search.setValue('python')"
     >
       Python
     </button>
     <button
       [class.selected]="this.search.getRawValue().toLowerCase() === 'java'"
-      (click)="setSearchValue('java')"
+      (click)="search.setValue('java')"
     >
       Java
     </button>
     <button
       [class.selected]="this.search.getRawValue().toLowerCase() === 'javascript'"
-      (click)="setSearchValue('javascript')"
+      (click)="search.setValue('javascript')"
     >
       JavaScript
     </button>
     <button
       [class.selected]="this.search.getRawValue().toLowerCase() === 'php'"
-      (click)="setSearchValue('php')"
+      (click)="search.setValue('php')"
     >
       PHP
     </button>

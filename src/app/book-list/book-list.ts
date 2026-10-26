@@ -37,8 +37,8 @@ export class BookList {
   protected readonly isRecent = signal<boolean>(true);
 
   protected readonly books$ = this.search.valueChanges.pipe(
-    filter((search) => search !== ''),
     distinctUntilChanged(),
+    filter((search) => search !== ''),
     tap((search: string) => {
       this.isLoading.set(true);
       this.searched.set(search);
@@ -68,9 +68,6 @@ export class BookList {
 
   protected onShowRecent(): void {
     this.isRecent.set(true);
-    this.setSearchValue('');
-  }
-  protected setSearchValue(value: string) {
-    this.search.setValue(value);
+    this.search.setValue('');
   }
 }
