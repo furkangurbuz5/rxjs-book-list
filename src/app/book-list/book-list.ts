@@ -1,7 +1,17 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ChangeDetectionStrategy, inject, signal, OnInit, effect } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, switchMap, tap, finalize, catchError, of, startWith, take, filter } from 'rxjs';
+import {
+  debounceTime,
+  switchMap,
+  tap,
+  finalize,
+  catchError,
+  of,
+  startWith,
+  take,
+  filter,
+} from 'rxjs';
 import { BookService } from '../service/book.service';
 import { Book } from '../interface/book.interface';
 import { Spinner } from '../util/spinner/spinner';
@@ -51,7 +61,6 @@ export class BookList implements OnInit {
   protected readonly recentBooks$ = this.bookService.getRecentBooks().pipe(
     tap(() => {
       this.isLoading.set(true);
-      this.searched.set('');
     }),
     finalize(() => this.isLoading.set(false)),
     catchError(() => {
@@ -59,12 +68,11 @@ export class BookList implements OnInit {
     }),
   );
 
-  testEffect = effect(() => console.log(this.isRecent()))
-
   ngOnInit(): void {}
 
   protected onShowRecent(): void {
     this.isRecent.set(true);
+    this.setSearchValue('');
   }
   protected setSearchValue(value: string) {
     this.search.setValue(value);
