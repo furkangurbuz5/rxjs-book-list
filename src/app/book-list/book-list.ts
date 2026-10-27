@@ -23,7 +23,7 @@ import { BookPage as FwdlBook } from './book/book';
   styleUrl: 'book-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookList {
+export class BookList implements OnInit {
   private readonly bookService = inject(BookService);
   private readonly fb = inject(FormBuilder);
 
@@ -35,10 +35,11 @@ export class BookList {
   protected readonly searched = signal<string>('');
   protected readonly isLoading = signal<boolean>(false);
   protected readonly isRecent = signal<boolean>(true);
+  protected readonly recentBooks = signal<Book[]>([]);
 
   protected readonly books$ = this.search.valueChanges.pipe(
     distinctUntilChanged(),
-    filter((search) => search !== ''),
+    filter((search: string) => search !== ''),
     tap((search: string) => {
       this.isLoading.set(true);
       this.searched.set(search);
@@ -54,6 +55,7 @@ export class BookList {
         }),
       );
     }),
+    tap((books: Book[]) => console.log(books)),
   );
 
   protected readonly recentBooks$ = this.bookService.getRecentBooks().pipe(
@@ -69,5 +71,13 @@ export class BookList {
   protected onShowRecent(): void {
     this.isRecent.set(true);
     this.search.setValue('');
+  }
+
+  ngOnInit(): void {
+    this.refreshRecentBooks();
+  }
+
+  refreshRecentBooks(): void {
+    this.recentBooks$.subscribe((books) => this.recentBooks.set(books));
   }
 }
