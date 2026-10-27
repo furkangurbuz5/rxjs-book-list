@@ -1,27 +1,29 @@
 <button routerLink="/">Go back</button>
 
+@let details = details$ | async;
+
 @if (isLoading()) {
   <fwdl-spinner [spin]="isLoading()"></fwdl-spinner>
-} @else if (details()) {
+} @else if (details) {
   <article class="book-details">
-    <img [src]="details().image" [alt]="details().title" />
-    <h2>{{ details().title }}</h2>
-    @if (details().subtitle) {
-      <h3>{{ details().subtitle }}</h3>
+    <img [src]="details.image" [alt]="details.title" />
+    <h2>{{ details.title }}</h2>
+    @if (details.subtitle) {
+      <h3>{{ details.subtitle }}</h3>
     }
-    <p>{{ details().description }}</p>
+    <p>{{ details.description }}</p>
 
     <div class="meta">
-      <p><strong>Authors:</strong> {{ details().authors }}</p>
-      <p><strong>Publisher:</strong> {{ details().publisher }}</p>
-      <p><strong>Pages:</strong> {{ details().pages }}</p>
-      <p><strong>Year:</strong> {{ details().year }}</p>
-      <p><strong>Status:</strong> {{ details().status }}</p>
+      <p><strong>Authors:</strong> {{ details.authors }}</p>
+      <p><strong>Publisher:</strong> {{ details.publisher }}</p>
+      <p><strong>Pages:</strong> {{ details.pages }}</p>
+      <p><strong>Year:</strong> {{ details.year }}</p>
+      <p><strong>Status:</strong> {{ details.status }}</p>
     </div>
 
     <div class="actions">
-      <a [href]="details().download" class="btn">Download</a>
-      <a [href]="details().url" class="btn" target="_blank">View original</a>
+      <a [href]="details.download" class="btn">Download</a>
+      <a [href]="details.url" class="btn" target="_blank">View original</a>
     </div>
   </article>
 }
