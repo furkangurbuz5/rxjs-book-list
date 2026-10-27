@@ -10,6 +10,7 @@ import {
   of,
   filter,
   distinctUntilChanged,
+  map,
 } from 'rxjs';
 import { BookService } from '../service/book.service';
 import { Book } from '../interface/book.interface';
@@ -23,7 +24,7 @@ import { BookPage as FwdlBook } from './book/book';
   styleUrl: 'book-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookList implements OnInit{
+export class BookList implements OnInit {
   private readonly bookService = inject(BookService);
   private readonly fb = inject(FormBuilder);
 
@@ -55,7 +56,12 @@ export class BookList implements OnInit{
         }),
       );
     }),
-    tap((books: Book[]) => console.log(books))
+    map((books: Book[]) => {
+      return books.filter((book: Book) => {
+        return !book.id.includes('X');
+      });
+    }),
+    tap((books: Book[]) => console.log(books)),
   );
 
   protected readonly recentBooks$ = this.bookService.getRecentBooks().pipe(
@@ -65,6 +71,11 @@ export class BookList implements OnInit{
     finalize(() => this.isLoading.set(false)),
     catchError(() => {
       return of([] as Book[]);
+    }),
+    map((books: Book[]) => {
+      return books.filter((book: Book) => {
+        return !book.id.includes('X');
+      });
     }),
   );
 
