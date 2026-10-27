@@ -28,8 +28,8 @@ export class BookList implements OnInit {
   private readonly bookService = inject(BookService);
   private readonly fb = inject(FormBuilder);
 
-  private INITIAL_SEARCH = '';
-  private DEBOUNCE_TIME_IN_MS = 300;
+  private readonly INITIAL_SEARCH = '';
+  private readonly DEBOUNCE_TIME_IN_MS = 300;
 
   protected readonly search = this.fb.nonNullable.control<string>(this.INITIAL_SEARCH);
 
