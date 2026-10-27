@@ -56,10 +56,14 @@ export class BookList implements OnInit {
         }),
       );
     }),
-    map((books: Book[]) => {
-      return books.filter((book: Book) => {
-        return !book.id.includes('X');
-      });
+    map((books: Book[]): Book[] => {
+      if (books) {
+        return books.filter((book: Book) => {
+          return !book.id.includes('X');
+        });
+      } else {
+        return [] as Book[];
+      }
     }),
     tap((books: Book[]) => console.log(books)),
   );
