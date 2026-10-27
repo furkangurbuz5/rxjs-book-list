@@ -9,9 +9,6 @@ export class BookService {
   private readonly dbooksUrl = 'https://www.dbooks.org/api';
 
   public getBooks(search: string): Observable<Book[]> {
-    if (isEmpty(search)) {
-      return of([] as Book[]);
-    }
     return this.http
       .get<BookResponse>(`${this.dbooksUrl}/search/${search}`)
       .pipe(map((response) => response.books));
@@ -22,16 +19,9 @@ export class BookService {
   }
 
   public getRecentBooks(): Observable<Book[]> {
-    return this.http
-      .get<BookResponse>(`${this.dbooksUrl}/recent`)
-      .pipe(map((response) => response.books), share());
-  }
-}
-
-function isEmpty(str: string): boolean {
-  if (str.length === 0) {
-    return true;
-  } else {
-    return false;
+    return this.http.get<BookResponse>(`${this.dbooksUrl}/recent`).pipe(
+      map((response) => response.books),
+      share(),
+    );
   }
 }
