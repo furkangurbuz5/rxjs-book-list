@@ -23,7 +23,7 @@ import { BookPage as FwdlBook } from './book/book';
   styleUrl: 'book-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookList implements OnInit {
+export class BookList implements OnInit{
   private readonly bookService = inject(BookService);
   private readonly fb = inject(FormBuilder);
 
@@ -55,7 +55,7 @@ export class BookList implements OnInit {
         }),
       );
     }),
-    tap((books: Book[]) => console.log(books)),
+    tap((books: Book[]) => console.log(books))
   );
 
   protected readonly recentBooks$ = this.bookService.getRecentBooks().pipe(
