@@ -61,7 +61,7 @@
 
 <section>
   @let books = books$ | async;
-  <!-- @let recentBooks = recentBooks$ | async; -->
+  @let recentBooks = recentBooks$ | async;
 
   @if (isLoading()) {
     <fwdl-spinner [spin]="isLoading()"></fwdl-spinner>
@@ -69,7 +69,7 @@
     @if (isRecent()) {
       <h2>Showing most recent books</h2>
       <div class="books-grid">
-        @for (book of recentBooks(); track book.id) {
+        @for (book of recentBooks; track book.id) {
           <fwdl-book [book]="book"></fwdl-book>
         }
       </div>

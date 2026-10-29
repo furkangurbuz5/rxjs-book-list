@@ -24,7 +24,7 @@ import { BookPage as FwdlBook } from './book/book';
   styleUrl: 'book-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookList implements OnInit {
+export class BookList {
   private readonly bookService = inject(BookService);
   private readonly fb = inject(FormBuilder);
 
@@ -85,11 +85,4 @@ export class BookList implements OnInit {
     this.search.setValue('');
   }
 
-  ngOnInit(): void {
-    this.refreshRecentBooks();
-  }
-
-  refreshRecentBooks(): void {
-    this.recentBooks$.subscribe((books) => this.recentBooks.set(books));
-  }
 }
